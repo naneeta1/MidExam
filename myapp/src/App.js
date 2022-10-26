@@ -1,5 +1,6 @@
 import { Button } from 'antd';
 import { Spin } from 'antd';
+import Search from 'antd/lib/transfer/search';
 import { useState, useEffect } from 'react';
 import './App.css';
 
@@ -36,7 +37,7 @@ const handleInputChange = (e) => {
   this.filterArray();
 }
 
-const handleChange=(val)=>{
+const Search=(val)=>{
   const fData = ()=>{
     data.filter(element => {
       return element.title.toLowerCase().includes(val.toLowerCase());
@@ -44,6 +45,12 @@ const handleChange=(val)=>{
   }
   setFilteredData(fData)
 }
+
+const deleteItem = (index) => {
+  FilteredData.splice(index, 1);
+  setFilteredData(FilteredData);
+};
+
 
 
   return (
@@ -58,12 +65,12 @@ const handleChange=(val)=>{
       </h3>
     </div>
     <span>
-      {prevsearch.map(i => <Button onClick={this.handleChange(i)}>{i}</Button>)}
+      {prevsearch.map(i => <Button onClick={Search(i)}>{i}</Button>)}
     </span>
     <div>
     {
       isLoading ? <Spin />:
-      FilteredData.map(i => <p>{i.title + '' +i.author}<a>{i.title}</a></p>)}
+      FilteredData.map(i => <p>{i.title + '' +i.author}<a>{i.title}</a><Button onClick={deleteItem}>Dismiss</Button></p>)}
     </div>
   </>
   );
