@@ -36,6 +36,15 @@ const handleInputChange = (e) => {
   this.filterArray();
 }
 
+const handleChange=(val)=>{
+  const fData = ()=>{
+    data.filter(element => {
+      return element.title.toLowerCase().includes(val.toLowerCase());
+    });
+  }
+  setFilteredData(fData)
+}
+
 
   return (
   <>
@@ -49,7 +58,7 @@ const handleInputChange = (e) => {
       </h3>
     </div>
     <span>
-      {prevsearch.map(i => <Button>{i}</Button>)}
+      {prevsearch.map(i => <Button onClick={this.handleChange(i)}>{i}</Button>)}
     </span>
     <div>
     {
