@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import { Spin } from 'antd';
 import { useState, useEffect } from 'react';
 import './App.css';
 
@@ -8,11 +9,13 @@ function App() {
   const [data, setData] = useState([]);
   const [FilteredData, setFilteredData] = useState([]);
   const [prevsearch, setPrevSearch] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://hn.algolia.com/api/v1/search?query=hello&page=0')
     .then(res => {
         return res.json();
+        setIsLoading(false);  
     })
     .then(data => {
         console.log(data.hits[0]);
@@ -24,11 +27,12 @@ function App() {
 const handleInputChange = (e) => {
   setQuery(e.target.value)
   setPrevSearch([query,...prevsearch])
-  setFilteredData((data)=>{
+  const fData = ()=>{
     data.filter(element => {
       return element.title.toLowerCase().includes(query.toLowerCase());
     });
-  })
+  }
+  setFilteredData(fData )
   this.filterArray();
 }
 
@@ -41,14 +45,16 @@ const handleInputChange = (e) => {
     <div style={{}}>
       <h3>Search: 
       <input type='text' placeholder='Input text here' style={{marginLeft:'6px'}}/>
-      <button style={{marginLeft:'6px'}} onSubmit={handleInputChange}>Submit</button>
+      <Button style={{marginLeft:'6px'}} onSubmit={handleInputChange}>Submit</Button>
       </h3>
     </div>
     <span>
-      {prevsearch.map(i => <button>{i}</button>)}
+      {prevsearch.map(i => <Button>{i}</Button>)}
     </span>
     <div>
-    {FilteredData.map(i => <p>{i.title + '' +i.author}<a>{i.title}</a></p>)}
+    {
+      isLoading ? <Spin />:
+      FilteredData.map(i => <p>{i.title + '' +i.author}<a>{i.title}</a></p>)}
     </div>
   </>
   );
